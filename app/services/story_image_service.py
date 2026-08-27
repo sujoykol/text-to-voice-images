@@ -3,6 +3,9 @@ from pathlib import Path
 from app.services.batch_scene_prompt_service import (
     BatchScenePromptService,
 )
+from app.services.image.batch_character_reference_service import (
+    BatchCharacterReferenceService,
+)
 from app.services.image.image_generation_service import (
     ImageGenerationService,
 )
@@ -14,10 +17,15 @@ from app.utils.filename import safe_folder_name
 class StoryImageService:
 
     def __init__(self) -> None:
+
         self.story_analyzer = StoryAnalyzer()
 
         self.visual_bible_service = (
             VisualBibleService()
+        )
+
+        self.batch_character_reference_service = (
+            BatchCharacterReferenceService()
         )
 
         self.batch_scene_prompt_service = (
@@ -29,6 +37,7 @@ class StoryImageService:
         )
 
         self.image_root = Path("images")
+
         self.image_root.mkdir(
             parents=True,
             exist_ok=True,
@@ -40,9 +49,9 @@ class StoryImageService:
         image_count: int,
     ) -> list[Path]:
 
-        # -----------------------------------------
-        # Validate input
-        # -----------------------------------------
+        # ==================================================
+        # 1. Validate input
+        # ==================================================
 
         if not story or not story.strip():
             raise ValueError(
@@ -54,11 +63,14 @@ class StoryImageService:
                 "image count must be greater than zero"
             )
 
-        # -----------------------------------------
-        # 1. Analyze story
-        # -----------------------------------------
+        # ==================================================
+        # 2. Analyze story
+        # ==================================================
 
-        print("Analyzing story...")
+        print()
+        print("=" * 70)
+        print("STEP 1: ANALYZING STORY")
+        print("=" * 70)
 
         analysis = (
             self.story_analyzer.analyze_story(
@@ -68,15 +80,21 @@ class StoryImageService:
         )
 
         print(
-            f"Story analysis created "
-            f"{len(analysis.scenes)} scenes."
+            f"Title: {analysis.title}"
         )
 
-        # -----------------------------------------
-        # 2. Create visual bible
-        # -----------------------------------------
+        print(
+            f"Scenes: {len(analysis.scenes)}"
+        )
 
-        print("Creating visual bible...")
+        # ==================================================
+        # 3. Create visual bible
+        # ==================================================
+
+        print()
+        print("=" * 70)
+        print("STEP 2: CREATING VISUAL BIBLE")
+        print("=" * 70)
 
         visual_bible = (
             self.visual_bible_service
@@ -85,30 +103,19 @@ class StoryImageService:
             )
         )
 
-        # -----------------------------------------
-        # 3. Create scene prompts
-        # -----------------------------------------
-
         print(
-            "Creating scene image prompts..."
+            f"Characters: "
+            f"{len(visual_bible.characters)}"
         )
 
-        prompt_batch = (
-            self.batch_scene_prompt_service
-            .create_all_prompts(
-                analysis=analysis,
-                visual_bible=visual_bible,
+        for character in visual_bible.characters:
+            print(
+                f"- {character.name}"
             )
-        )
 
-        print(
-            f"Created {len(prompt_batch.prompts)} "
-            f"image prompts."
-        )
-
-        # -----------------------------------------
+        # ==================================================
         # 4. Create story directory
-        # -----------------------------------------
+        # ==================================================
 
         story_folder = safe_folder_name(
             analysis.title
@@ -123,13 +130,67 @@ class StoryImageService:
             exist_ok=True,
         )
 
-        # -----------------------------------------
-        # 5. Generate images
-        # -----------------------------------------
+        # ==================================================
+        # 5. Generate character references
+        # ==================================================
+
+        print()
+        print("=" * 70)
+        print("STEP 3: GENERATING CHARACTER REFERENCES")
+        print("=" * 70)
+
+        character_reference_images = (
+            self.batch_character_reference_service
+            .generate_all(
+                visual_bible=visual_bible
+            )
+        )
+
+        print()
+        print(
+            f"Generated "
+            f"{len(character_reference_images)} "
+            f"character reference image(s)."
+        )
+
+        # ==================================================
+        # 6. Create scene prompts
+        # ==================================================
+
+        print()
+        print("=" * 70)
+        print("STEP 4: CREATING SCENE PROMPTS")
+        print("=" * 70)
+
+        prompt_batch = (
+            self.batch_scene_prompt_service
+            .create_all_prompts(
+                analysis=analysis,
+                visual_bible=visual_bible,
+            )
+        )
+
+        print(
+            f"Created "
+            f"{len(prompt_batch.prompts)} "
+            f"scene image prompts."
+        )
+
+        # ==================================================
+        # 7. Generate scene images
+        # ==================================================
+
+        print()
+        print("=" * 70)
+        print("STEP 5: GENERATING SCENE IMAGES")
+        print("=" * 70)
 
         generated_images: list[Path] = []
 
-        for image_prompt in prompt_batch.prompts:
+        for index, image_prompt in enumerate(
+            prompt_batch.prompts,
+            start=1,
+        ):
 
             scene_number = (
                 image_prompt.scene_number
@@ -141,9 +202,8 @@ class StoryImageService:
             )
 
             print(
-                f"Generating image "
-                f"{scene_number}/"
-                f"{len(prompt_batch.prompts)}..."
+                f"Generating scene "
+                f"{index}/{len(prompt_batch.prompts)}..."
             )
 
             generated_path = (
@@ -158,14 +218,34 @@ class StoryImageService:
                 generated_path
             )
 
-        # -----------------------------------------
-        # 6. Final result
-        # -----------------------------------------
+            print(
+                f"Generated: {generated_path}"
+            )
+
+        # ==================================================
+        # 8. Final result
+        # ==================================================
+
+        print()
+        print("=" * 70)
+        print("STORY IMAGE GENERATION COMPLETE")
+        print("=" * 70)
 
         print(
-            f"Generated "
-            f"{len(generated_images)} "
-            f"story images."
+            f"Character references: "
+            f"{len(character_reference_images)}"
         )
+
+        print(
+            f"Scene images: "
+            f"{len(generated_images)}"
+        )
+
+        print(
+            f"Output directory: "
+            f"{output_dir}"
+        )
+
+        print("=" * 70)
 
         return generated_images

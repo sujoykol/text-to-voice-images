@@ -2,7 +2,6 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-
 class StoryGenerateRequest(BaseModel):
     mode: Literal["generate", "provided"] = Field(
         ...,
@@ -28,12 +27,30 @@ class StoryGenerateRequest(BaseModel):
         description="Target narration duration in minutes.",
     )
 
+    language: Literal[
+        "en",
+        "hi",
+        "fr",
+    ] = Field(
+        default="en",
+        description="Narration language.",
+    )
+
     voice: Literal[
         "af_heart",
+        "af_bella",
+        "af_sarah",
+        "af_nicole",
+        "af_sky",
         "am_adam",
+        "hf_alpha",
+        "hf_beta",
+        "hm_omega",
+        "hm_psi",
+        "ff_siwis",
     ] = Field(
         default="af_heart",
-        description="Kokoro voice.",
+        description="Kokoro voice ID.",
     )
 
     speed: float = Field(

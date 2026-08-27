@@ -44,11 +44,13 @@ def generate_story_audio(
 ) -> StoryGenerateResponse:
 
     try:
+
         output_path = story_audio_service.generate_story_audio(
             mode=request.mode,
             prompt=request.prompt,
             story=request.story,
             duration_minutes=request.duration_minutes,
+            language=request.language,
             voice=request.voice,
             speed=request.speed,
         )
@@ -65,9 +67,14 @@ def generate_story_audio(
         ) from exc
 
     except Exception as exc:
+        print(
+            f"Story audio generation error: "
+            f"{type(exc).__name__}: {exc}"
+        )
+
         raise HTTPException(
             status_code=500,
-            detail="Failed to generate story audio",
+            detail=str(exc),
         ) from exc
 
 

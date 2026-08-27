@@ -25,8 +25,6 @@ Your highest priority is VISUAL CONTINUITY.
 1. IMMUTABLE VISUAL IDENTITY
 ==================================================
 
-LOCKED VISUAL DATA is immutable.
-
 The Visual Bible is the visual source of truth.
 
 You MUST preserve:
@@ -60,53 +58,36 @@ Every supplied character reference must be preserved.
 The SAME character must look like the SAME person
 throughout the entire story.
 
-If the locked character says:
+Never randomly change:
 
-"short black hair"
-
-the prompt must preserve:
-
-"short black hair"
-
-Do NOT replace it with:
-
-- long hair
-- brown hair
-- gray hair
-- different hairstyle
-
-If the locked character says:
-
-"faded blue cotton shirt"
-
-preserve that exact clothing identity.
-
-Do not randomly change:
-
-- shirt
-- trousers
-- shoes
-- accessories
+- face
 - hairstyle
-- facial structure
+- hair color
+- skin tone
 - body proportions
+- clothing
+- accessories
+- distinctive features
 
-Character changes are allowed ONLY if explicitly required
-by the selected scene.
+Character changes are allowed ONLY when explicitly
+required by the selected scene.
 
 ==================================================
 3. CHARACTER REFERENCES
 ==================================================
 
-The `characters` field must contain the selected scene's
-locked character references.
+The characters field represents characters present
+in the selected scene.
 
-Do not create new character references.
+Do not create new characters.
 
-Do not omit important locked attributes.
+Do not remove characters from the selected scene.
 
-The `characters` field is a structured continuity record,
-not a creative rewrite.
+Do not rename characters.
+
+Do not redesign character identities.
+
+The supplied locked character data is immutable.
 
 ==================================================
 4. LOCATION CONSISTENCY
@@ -121,15 +102,12 @@ again later.
 
 Do not invent a completely different environment.
 
-Do not change:
+Preserve:
 
 - architecture
 - geography
 - environmental identity
 - important recurring structures
-
-Creative cinematic presentation is allowed, but the
-underlying location identity must remain unchanged.
 
 ==================================================
 5. OBJECT CONSISTENCY
@@ -169,8 +147,7 @@ Do not combine multiple scenes.
 
 Do not show future events.
 
-Do not show objects that are not present in the selected
-scene unless the scene itself logically contains them.
+Do not import events from other scenes.
 
 The complete story is context only.
 
@@ -203,15 +180,13 @@ Do NOT switch between:
 - 3D rendering
 - realistic photography
 - unrelated illustration styles
-- cartoon styles unrelated to the Visual Bible
-
-The style must remain stable throughout the story.
+- unrelated cartoon styles
 
 ==================================================
 8. CINEMATOGRAPHIC FREEDOM
 ==================================================
 
-You may creatively determine scene-specific:
+You may creatively determine:
 
 - shot type
 - camera angle
@@ -221,18 +196,6 @@ You may creatively determine scene-specific:
 
 These decisions must support the selected scene.
 
-Examples:
-
-- wide establishing shot
-- medium shot
-- close-up
-- over-the-shoulder
-- low angle
-- high angle
-- centered composition
-- rule of thirds
-- negative space
-
 Do not allow cinematography to alter story events.
 
 ==================================================
@@ -240,8 +203,6 @@ Do not allow cinematography to alter story events.
 ==================================================
 
 Use the scene's mood to guide cinematic presentation.
-
-For example:
 
 Mysterious:
 - controlled shadows
@@ -265,10 +226,10 @@ the global Visual Bible style.
 10. FINAL PROMPT
 ==================================================
 
-The `prompt` field must be a complete production-ready
+The prompt field must be a complete production-ready
 image-generation prompt.
 
-It should naturally combine:
+Naturally combine:
 
 1. Character identity
 2. Character action
@@ -297,18 +258,18 @@ Do not explain reasoning.
 11. CONTINUITY INSTRUCTIONS
 ==================================================
 
-Create explicit continuity instructions for downstream
-image generation.
+Create explicit continuity instructions based on the
+actual locked Visual Bible data.
 
 Examples:
 
-- "Maintain the same facial identity established for Thomas."
-- "Maintain the same clothing design throughout the story."
-- "Maintain the same 2D illustration style."
-- "Maintain the established appearance of recurring objects."
-- "Maintain the established visual identity of the location."
-
-These instructions must be based on actual locked data.
+- Maintain the same facial identity.
+- Maintain the same hairstyle.
+- Maintain the same clothing identity.
+- Maintain stable body proportions.
+- Maintain the established location identity.
+- Maintain the established appearance of recurring objects.
+- Maintain the same 2D illustration style.
 
 ==================================================
 12. OUTPUT
@@ -326,6 +287,7 @@ Do not add fields outside the ImagePrompt schema.
 """
 
     def __init__(self) -> None:
+
         self.client = genai.Client(
             api_key=settings.GEMINI_API_KEY
         )
@@ -345,6 +307,11 @@ Do not add fields outside the ImagePrompt schema.
         if visual_bible is None:
             raise ValueError(
                 "visual bible is required"
+            )
+
+        if not analysis.scenes:
+            raise ValueError(
+                "story analysis contains no scenes"
             )
 
         # ==================================================
@@ -372,10 +339,11 @@ Do not add fields outside the ImagePrompt schema.
         scene_character_names = {
             name.strip().lower()
             for name in scene.characters
+            if name and name.strip()
         }
 
         locked_characters = [
-            character.model_dump()
+            character
             for character in visual_bible.characters
             if character.name.strip().lower()
             in scene_character_names
@@ -385,15 +353,23 @@ Do not add fields outside the ImagePrompt schema.
         # 3. Resolve scene location
         # ==================================================
 
-        locked_location = next(
-            (
-                location.model_dump()
-                for location in visual_bible.locations
-                if location.name.strip().lower()
-                == scene.location.strip().lower()
-            ),
-            None,
-        )
+        locked_location = None
+
+        if scene.location:
+
+            scene_location_name = (
+                scene.location.strip().lower()
+            )
+
+            locked_location = next(
+                (
+                    location
+                    for location in visual_bible.locations
+                    if location.name.strip().lower()
+                    == scene_location_name
+                ),
+                None,
+            )
 
         # ==================================================
         # 4. Resolve scene objects
@@ -402,6 +378,7 @@ Do not add fields outside the ImagePrompt schema.
         scene_visual_elements = {
             element.strip().lower()
             for element in scene.visual_elements
+            if element and element.strip()
         }
 
         locked_objects = []
@@ -420,27 +397,42 @@ Do not add fields outside the ImagePrompt schema.
             )
 
             if matched:
-                locked_objects.append(
-                    obj.model_dump()
-                )
+                locked_objects.append(obj)
 
         # ==================================================
-        # 5. Visual style
+        # 5. Resolve visual style
         # ==================================================
 
         locked_visual_style = (
-            visual_bible.visual_style.model_dump()
+            visual_bible.visual_style
         )
 
+        if locked_visual_style is None:
+            raise ValueError(
+                "visual bible contains no visual style"
+            )
+
         # ==================================================
-        # 6. Immutable visual package
+        # 6. Build immutable visual package
         # ==================================================
 
         locked_visual_data = {
-            "characters": locked_characters,
-            "location": locked_location,
-            "important_objects": locked_objects,
-            "visual_style": locked_visual_style,
+            "characters": [
+                character.model_dump()
+                for character in locked_characters
+            ],
+            "location": (
+                locked_location.model_dump()
+                if locked_location
+                else None
+            ),
+            "important_objects": [
+                obj.model_dump()
+                for obj in locked_objects
+            ],
+            "visual_style": (
+                locked_visual_style.model_dump()
+            ),
         }
 
         # ==================================================
@@ -485,8 +477,7 @@ Protagonist:
 Central Conflict:
 {analysis.central_conflict}
 
-Use this information only to understand the selected
-scene.
+Use this information only as context.
 
 Do not import events from other scenes.
 
@@ -496,19 +487,19 @@ FINAL TASK
 
 Create ImagePrompt for Scene {scene_number}.
 
-The final image must look like it belongs to the same
+The image must look like it belongs to the same
 2D illustrated film as every other image in the story.
 
-Preserve all locked character identities.
+Preserve the supplied character identities.
 
-Preserve all locked locations.
+Preserve the supplied location identity.
 
-Preserve all locked objects.
+Preserve the supplied important objects.
 
 Preserve the global visual style.
 
-Only the scene-specific action and cinematography should
-change.
+Only scene-specific action and cinematography
+should change.
 
 Return ONLY valid ImagePrompt structured data.
 """,
@@ -528,7 +519,7 @@ Return ONLY valid ImagePrompt structured data.
         )
 
         # ==================================================
-        # 8. Validate scene identity
+        # 8. Validate scene number
         # ==================================================
 
         if prompt.scene_number != scene_number:
@@ -537,11 +528,11 @@ Return ONLY valid ImagePrompt structured data.
             )
 
         # ==================================================
-        # 9. Validate character identity references
+        # 9. Enforce locked character identity
         # ==================================================
 
         expected_character_names = {
-            character["name"].strip().lower()
+            character.name.strip().lower()
             for character in locked_characters
         }
 
@@ -550,22 +541,31 @@ Return ONLY valid ImagePrompt structured data.
             for character in prompt.characters
         }
 
-        if expected_character_names != returned_character_names:
-            raise ValueError(
-                "Generated prompt character references "
-                "do not match the selected scene"
+        if returned_character_names != expected_character_names:
+
+            print(
+                "Warning: Gemini returned character "
+                "references that differ from the locked "
+                "Visual Bible."
             )
 
+        # The Visual Bible is the source of truth.
+        # Always restore the exact locked character
+        # records instead of trusting Gemini's copy.
+
+        prompt.characters = [
+            character.model_copy(deep=True)
+            for character in locked_characters
+        ]
+
         # ==================================================
-        # 10. Validate location
+        # 10. Enforce locked location
         # ==================================================
 
         if locked_location:
 
             expected_location_name = (
-                locked_location["name"]
-                .strip()
-                .lower()
+                locked_location.name.strip().lower()
             )
 
             if (
@@ -573,9 +573,14 @@ Return ONLY valid ImagePrompt structured data.
                 or prompt.location.strip().lower()
                 != expected_location_name
             ):
-                raise ValueError(
-                    "Generated prompt location does not "
-                    "match the selected scene"
+
+                print(
+                    "Warning: Gemini returned a location "
+                    "that differs from the locked Visual Bible."
+                )
+
+                prompt.location = (
+                    locked_location.name
                 )
 
         # ==================================================
@@ -586,5 +591,68 @@ Return ONLY valid ImagePrompt structured data.
             raise ValueError(
                 "Generated prompt contains no visual style"
             )
+
+        # ==================================================
+        # 12. Enforce continuity instructions
+        # ==================================================
+
+        continuity_instructions = []
+
+        for character in locked_characters:
+
+            continuity_instructions.append(
+                f"Maintain the same facial identity "
+                f"established for {character.name}."
+            )
+
+            continuity_instructions.append(
+                f"Maintain the same hairstyle and "
+                f"physical appearance established for "
+                f"{character.name}."
+            )
+
+            continuity_instructions.append(
+                f"Maintain the same clothing identity "
+                f"established for {character.name}."
+            )
+
+        if locked_location:
+
+            continuity_instructions.append(
+                f"Maintain the established visual identity "
+                f"of the location: {locked_location.name}."
+            )
+
+        for obj in locked_objects:
+
+            continuity_instructions.append(
+                f"Maintain the established identity of "
+                f"the recurring object: {obj.name}."
+            )
+
+        continuity_instructions.append(
+            "Maintain the same global 2D illustration style."
+        )
+
+        prompt.continuity_instructions = (
+            continuity_instructions
+        )
+
+        # ==================================================
+        # 13. Final validation
+        # ==================================================
+
+        if prompt.characters:
+
+            final_character_names = {
+                character.name.strip().lower()
+                for character in prompt.characters
+            }
+
+            if final_character_names != expected_character_names:
+                raise ValueError(
+                    "Failed to enforce locked character "
+                    "references."
+                )
 
         return prompt
