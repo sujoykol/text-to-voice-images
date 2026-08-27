@@ -11,9 +11,12 @@ class ImageProvider(ABC):
         self,
         image_prompt: ImagePrompt,
         output_path: Path,
+        reference_images: list[Path] | None = None,
     ) -> Path:
         """
-        Generate an image from an ImagePrompt
-        and save it to output_path.
+        Generate an image from an ImagePrompt.
+
+        Optional reference images can be supplied to help
+        preserve visual identity and continuity.
         """
         raise NotImplementedError

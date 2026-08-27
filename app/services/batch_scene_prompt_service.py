@@ -31,10 +31,21 @@ class BatchScenePromptService:
                 "story analysis contains no scenes"
             )
 
+        scene_numbers = [
+            scene.scene_number
+            for scene in analysis.scenes
+        ]
+
+        if len(scene_numbers) != len(set(scene_numbers)):
+            raise ValueError(
+                "story analysis contains duplicate scene numbers"
+            )
+
         prompts: list[ImagePrompt] = []
 
         for scene in analysis.scenes:
 
+            print()
             print(
                 f"Generating image prompt "
                 f"for scene {scene.scene_number}..."
@@ -50,6 +61,12 @@ class BatchScenePromptService:
             )
 
             prompts.append(prompt)
+
+        if len(prompts) != len(analysis.scenes):
+            raise RuntimeError(
+                "generated prompt count does not match "
+                "scene count"
+            )
 
         return ImagePromptBatch(
             prompts=prompts
