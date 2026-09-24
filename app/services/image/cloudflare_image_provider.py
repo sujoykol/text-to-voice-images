@@ -103,11 +103,11 @@ class CloudflareImageProvider(ImageProvider):
             ),
             "width": (
                 None,
-                "1024",
+                "1920",
             ),
             "height": (
                 None,
-                "1024",
+                "1080",
             ),
         }
 

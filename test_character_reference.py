@@ -10,18 +10,16 @@ from app.services.image.cloudflare_image_provider import (
 def main() -> None:
 
     reference = CharacterReference(
-        name="Arun",
+        name="Sujoy",
         reference_prompt=(
-            "Full-body character reference illustration of Arun, "
+            "Full-body character reference illustration of Sujoy, "
             "a young man from a poor village, standing upright "
             "in a neutral pose and facing forward. "
             "Show the complete character from head to toe. "
             "Clear readable face, clear hairstyle, stable body "
             "proportions, unobstructed silhouette, neutral "
             "expression, simple clean background. "
-            "Cinematic 2D digital illustration with painterly "
-            "textures and detailed anime-inspired artwork. "
-            "This is a character identity reference image, "
+            "Bright 2D vector-style Indian moral/story illustration, clean controlled outlines, clean flat vector-style shapes, simple readable character forms, expressive natural facial features, vibrant harmonious colors, simple vector-style shading, authentic Indian clothing, polished illustrated storytelling aesthetic."
             "not a story scene."
         ),
     )
@@ -33,8 +31,11 @@ def main() -> None:
         location=None,
         important_objects=[],
         visual_style=(
-            "Cinematic 2D digital illustration, "
-            "painterly textures, detailed anime-inspired artwork."
+            "Bright 2D vector-style Indian moral/story illustration, "
+            "clean controlled outlines, clean flat vector-style shapes, "
+            "simple readable character forms, expressive natural facial "
+            "features, vibrant harmonious colors, simple vector-style shading, "
+            "authentic Indian clothing, polished illustrated storytelling aesthetic."
         ),
         cinematography={
             "shot_type": "full-body character reference",
@@ -56,7 +57,7 @@ def main() -> None:
     provider = CloudflareImageProvider()
 
     output_path = Path(
-        "images/references/arun_reference.jpg"
+        "images/references/sujoy_reference.jpg"
     )
 
     result = provider.generate(

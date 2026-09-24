@@ -13,6 +13,7 @@ class TTSService:
         voice: str = "af_heart",
         lang_code: str = "a",
         speed: float = 1.0,
+        output_dir: Path = Path("audio/temp"),
     ) -> None:
 
         from kokoro import KPipeline
@@ -26,7 +27,8 @@ class TTSService:
         self.voice = voice
         self.speed = speed
 
-        self.output_dir = Path("audio/temp")
+        # Language-specific or temporary output directory
+        self.output_dir = Path(output_dir)
         self.output_dir.mkdir(
             parents=True,
             exist_ok=True,

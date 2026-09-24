@@ -152,36 +152,146 @@ Do not import events from other scenes.
 The complete story is context only.
 
 ==================================================
-7. GLOBAL VISUAL STYLE
+GLOBAL 2D VECTOR-STYLE INDIAN STORY ILLUSTRATION
 ==================================================
 
-Every image must belong to the SAME visual production.
+Every generated scene MUST belong to the SAME professionally
+designed 2D vector-style Indian storytelling world.
 
-Use the supplied Visual Bible visual style.
+The Visual Bible is the authoritative source for the
+global visual style.
 
-Preserve:
+The scene must preserve the established:
 
-- artistic style
-- lighting philosophy
-- color mood
-- cinematic direction
+- clean controlled outlines
+- clean flat vector-style shapes
+- simple readable forms
+- expressive natural facial features
+- consistent body proportions
+- consistent clothing design
+- vibrant but harmonious colors
+- clean flat color regions
+- simple vector-style shading
+- authentic Indian environments and clothing
+- coherent background design
+- consistent object design
+- clear foreground, middle ground, and background separation
+- overall polished 2D vector-style illustration language
 
-The image must be:
+Characters must remain recognizable and consistent
+with their locked character references.
 
-- 2D illustrated
-- cinematic
-- story-driven
-- visually detailed
-- coherent with the other images
+==================================================
+CHARACTER CONTINUITY
+==================================================
 
-Do NOT switch between:
+For every recurring character, preserve:
+
+- facial structure
+- eyes and facial features
+- hairstyle
+- hair length and shape
+- skin tone
+- body proportions
+- clothing
+- accessories
+- distinctive features
+- overall character silhouette
+
+Do not redesign, reinterpret, age, beautify, stylize
+differently, or replace a recurring character.
+
+The same character must look like the same character
+across every scene.
+
+==================================================
+SCENE DESIGN
+==================================================
+
+The scene should communicate the story clearly through:
+
+- character action
+- facial expression
+- body language
+- environment
+- props
+- composition
+- camera framing
+- lighting
+- visual depth
+
+Use cinematic composition when appropriate, but the
+underlying visual language must remain bright 2D
+vector-style illustrated artwork.
+
+The result should feel like part of the same
+professionally designed illustrated story world.
+
+==================================================
+RENDERING RULES
+==================================================
+
+Prefer:
+
+- clean controlled outlines
+- simple readable shapes
+- vibrant harmonious colors
+- clean flat fills
+- simple vector-style shading
+- expressive natural character forms
+- clear foreground and background separation
+- coherent lighting
+- polished illustrated surfaces
+
+Avoid excessive rendering that makes the image resemble
+a realistic painting or photograph.
+
+==================================================
+STRICT STYLE EXCLUSIONS
+==================================================
+
+Never introduce:
 
 - photorealism
-- 3D rendering
 - realistic photography
-- unrelated illustration styles
+- 3D rendering
+- 3D character design
+- realistic anatomy
+- realistic skin texture
+- painterly digital art
+- oil painting
+- watercolor painting
+- photographic textures
+- hyper-realistic lighting
+- generic concept-art aesthetics
+- stock-image aesthetics
+- anime styling
+- manga styling
 - unrelated cartoon styles
+- unrelated illustration styles
 
+Do not allow the image generator to choose a different
+art style for an individual scene.
+
+==================================================
+FINAL VISUAL TARGET
+==================================================
+
+The final image should look like:
+
+"A bright polished 2D vector-style Indian moral/story
+illustration with consistent character design, clean
+controlled outlines, simple readable shapes, expressive
+natural characters, stylized proportions, vibrant
+harmonious colors, clean flat color regions, simple
+vector-style shading, authentic Indian environments
+and clothing, clear foreground/middle/background
+separation, and strong visual storytelling."
+
+The Visual Bible remains the source of truth for any
+story-specific visual decisions.
+
+==================================================
 ==================================================
 8. CINEMATOGRAPHIC FREEDOM
 ==================================================

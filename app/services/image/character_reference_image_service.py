@@ -42,9 +42,22 @@ class CharacterReferenceImageService:
             location=None,
             important_objects=[],
             visual_style=(
-                "Cinematic 2D digital illustration, "
-                "painterly textures, detailed "
-                "anime-inspired artwork."
+                "Bright 2D vector-style Indian moral/story illustration, "
+                "clean controlled outlines, "
+                "clean flat vector-style shapes, "
+                "simple readable character forms, "
+                "expressive natural facial features, "
+                "recognizable silhouette, "
+                "consistent stylized body proportions, "
+                "vibrant harmonious colors, "
+                "clean flat color regions, "
+                "simple vector-style shading, "
+                "authentic Indian clothing where appropriate, "
+                "consistent character construction, "
+                "polished illustrated storytelling aesthetic. "
+                "No photorealism, no 3D rendering, "
+                "no photography, no painterly textures, "
+                "no digital painting, no anime styling."
             ),
             cinematography={
                 "shot_type": "full-body character reference",

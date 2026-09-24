@@ -23,12 +23,6 @@ class StoryAudioService:
             exist_ok=True,
         )
 
-        self.temp_dir = self.audio_dir / "temp"
-        self.temp_dir.mkdir(
-            parents=True,
-            exist_ok=True,
-        )
-
     def generate_story_audio(
         self,
         mode: str,
@@ -50,7 +44,6 @@ class StoryAudioService:
         )
 
         language_config = LANGUAGE_CONFIG.get(language)
-        #language_config = self.LANGUAGE_CONFIG.get(language)
 
         if language_config is None:
             raise ValueError(
@@ -73,6 +66,34 @@ class StoryAudioService:
 
         print(
             f"Narration voice: {voice}"
+        )
+
+        # -----------------------------------------
+        # 0.1 Determine language audio directory
+        # -----------------------------------------
+
+        language_folders = {
+            "en": "english",
+            "hi": "hindi",
+            "fr": "french",
+        }
+
+        language_folder = language_folders.get(
+            language,
+            language,
+        )
+
+        language_dir = (
+            self.audio_dir / language_folder
+        )
+
+        language_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        print(
+            f"Audio directory: {language_dir}"
         )
 
         # -----------------------------------------
@@ -149,6 +170,7 @@ class StoryAudioService:
             voice=voice,
             lang_code=lang_code,
             speed=speed,
+            output_dir=language_dir,
         )
 
         rendered_segments = []
@@ -195,11 +217,11 @@ class StoryAudioService:
             )
 
         # -----------------------------------------
-        # 6. Render WAV
+        # 6. Render final WAV
         # -----------------------------------------
 
         wav_path = (
-            self.audio_dir / "story.wav"
+            language_dir / "story.wav"
         )
 
         print(
@@ -216,7 +238,7 @@ class StoryAudioService:
         # -----------------------------------------
 
         mp3_path = (
-            self.audio_dir / output_name
+            language_dir / output_name
         )
 
         print(

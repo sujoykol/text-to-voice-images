@@ -6,7 +6,7 @@ from app.schemas.story_analysis import StoryAnalysis
 
 class StoryAnalyzer:
 
-    MODEL_NAME = "gemini-3.1-flash-lite"
+    MODEL_NAME = "gemini-3.5-flash-lite"
 
     SYSTEM_PROMPT = """
 You are a professional story analyst working inside

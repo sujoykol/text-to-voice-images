@@ -224,7 +224,7 @@ The following character information is immutable.
 VISUAL STYLE
 ==================================================
 
-{visual_style or "Cinematic 2D digital illustration."}
+{visual_style or "Bright 2D vector-style Indian moral/story illustration, clean controlled outlines, clean flat vector-style shapes, simple readable forms, expressive natural characters, vibrant harmonious colors, simple vector-style shading, authentic Indian environments and clothing."}
 
 ==================================================
 FINAL REQUIREMENTS

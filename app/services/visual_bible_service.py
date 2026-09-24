@@ -7,7 +7,7 @@ from app.schemas.visual_bible import VisualBible
 
 class VisualBibleService:
 
-    MODEL_NAME = "gemini-3.1-flash-lite"
+    MODEL_NAME = "gemini-3.5-flash-lite"
 
     SYSTEM_PROMPT = """
 You are a senior visual-development director working
@@ -244,46 +244,181 @@ The same object should look substantially the same
 whenever it appears.
 
 ==================================================
-8. GLOBAL 2D ILLUSTRATION STYLE
+GLOBAL 2D VECTOR-STYLE INDIAN STORY ILLUSTRATION
 ==================================================
 
-ALL STORY IMAGES MUST BELONG TO ONE COHERENT
-2D ILLUSTRATED VISUAL LANGUAGE.
+All story images MUST belong to one unified visual
+illustration style.
 
-The global visual direction should establish:
+The images should look like carefully designed
+2D vector-style illustrations from the SAME Indian
+moral/storytelling world, not like unrelated AI artwork.
 
-- artistic style
-- illustration medium
-- rendering approach
-- lighting philosophy
+The visual style is a bright, polished 2D vector-style
+illustration aesthetic designed for character-driven
+Indian storytelling.
+
+==================================================
+CHARACTER DESIGN LANGUAGE
+==================================================
+
+Characters should have:
+
+- clean controlled outlines
+- clean flat vector-style shapes
+- simple readable forms
+- expressive natural facial features
+- expressive eyes and readable emotions
+- stylized but consistent body proportions
+- recognizable silhouettes
+- clear hands, arms, legs, and body shapes
+- consistent hairstyle and facial structure
+- consistent clothing construction
+- authentic Indian clothing where appropriate
+- distinctive visual features that remain stable
+- appealing and readable character poses
+
+Characters must remain recognizable across different
+poses, camera angles, distances, and story moments.
+
+Do not redesign characters from scene to scene.
+
+==================================================
+COLOR AND RENDERING
+==================================================
+
+Use:
+
+- bright vibrant but harmonious colors
+- clean flat color regions
+- crisp color separation
+- simple vector-style shading
+- readable contrast between characters and backgrounds
+- simple highlights and shadows when appropriate
+- clean polished surfaces
+
+Avoid realistic photographic rendering.
+
+The overall image should remain clearly illustrated,
+bright, clean, and visually readable.
+
+==================================================
+BACKGROUND AND ENVIRONMENT
+==================================================
+
+Environments should be fully designed 2D illustrated
+backgrounds that support the story.
+
+Use:
+
+- simplified architectural forms
+- authentic Indian environmental elements
+- stylized vegetation
+- designed environmental shapes
+- clear foreground, middle ground, and background
+- readable props and objects
+- coherent perspective
+- visually appealing color relationships
+
+Backgrounds should establish the location clearly
+without overwhelming the characters.
+
+==================================================
+STORYTELLING COMPOSITION
+==================================================
+
+Use composition to communicate the story clearly.
+
+Appropriate compositions include:
+
+- wide establishing views
+- medium character views
+- close character views
+- character-focused compositions
+- foreground and background layering
+- clear visual depth
+- readable character actions
+- expressive poses
+- clear subject focus
+
+Composition may vary between images, but the underlying
+2D vector-style illustration must remain consistent.
+
+==================================================
+STYLE CONSISTENCY
+==================================================
+
+The following must remain visually consistent across
+the entire story:
+
+- character design
+- facial construction
+- hairstyle
+- body proportions
+- clothing
 - color language
-- atmosphere
-- cinematic direction
+- outline style
+- shading approach
+- background design
+- environmental shapes
+- object design
+- overall illustration aesthetic
 
-The default visual foundation should be:
+A character appearing in Scene 1 must still look like
+the same character in Scene 10.
 
-"cinematic 2D digital illustration"
+A location appearing repeatedly must still belong to
+the same illustrated world.
 
-The style should feel:
+==================================================
+STRICTLY AVOID
+==================================================
 
-- handcrafted
-- illustrated
-- cinematic
-- expressive
-- story-driven
-- detailed
-- visually coherent
+Do NOT generate:
 
-Do NOT make the output photorealistic.
+- photorealistic imagery
+- realistic photography
+- 3D-rendered characters
+- 3D animation aesthetics
+- realistic human anatomy
+- realistic skin texture
+- painterly digital artwork
+- oil-painting aesthetics
+- watercolor aesthetics
+- photographic textures
+- hyper-realistic lighting
+- generic concept-art rendering
+- stock-image aesthetics
+- anime-specific character styling
+- manga styling
+- unrelated cartoon styles
+- random changes in illustration technique
 
-Do NOT make the output a 3D render.
+Do not allow individual images to adopt a different
+art style.
 
-Do NOT use generic stock-image aesthetics.
+==================================================
+DEFAULT VISUAL FOUNDATION
+==================================================
 
-Do NOT allow every scene to adopt a different art style.
+The default visual foundation is:
 
-The style must remain consistent across the entire
-story.
+"Bright polished 2D vector-style Indian moral/story
+illustration with clean controlled outlines, simple
+readable shapes, expressive natural characters,
+consistent proportions, vibrant harmonious colors,
+clean flat color regions, simple vector-style shading,
+authentic Indian environments and clothing, clear
+foreground/middle/background separation, and strong
+visual storytelling."
+
+This visual foundation is the default unless the story's
+Visual Bible explicitly establishes a compatible
+variation.
+
+The variation must still remain recognizably part of
+the same 2D vector-style illustrated world.
+
 
 ==================================================
 9. ILLUSTRATION CONSISTENCY
